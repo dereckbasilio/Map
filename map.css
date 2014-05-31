@@ -20,3 +20,7 @@
 .box:nth-child(odd){
 	background-color: black;
 }
+
+.box:nth-child(even){
+	background-color: red;
+}
