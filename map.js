@@ -31,40 +31,41 @@ $(document).ready(function(){
 		$(".container").css("font-size", size/(grid.length*2));
 	};
 
-	grid = generateGrid(9,9);
+	grid = generateGrid(15,15);
 	displayGrid(grid);
 
-	$(document).keyup(function(e){
+	$(document).keydown(function(e){
+		var box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
+		console.log(box);
 		switch(e.which){
 			case leftKey: 
 				if(currentPosition[1] > 1){
-					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("");
+					box.html("");
 					currentPosition[1] -= 1;
 					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("X");
 				}
 				break;
 			case rightKey: 
 				if(currentPosition[1] < grid[0].length){
-					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("");
+					box.html("");
 					currentPosition[1] += 1;
 					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("X");
 				}
 				break;
 			case upKey: 
 				if(currentPosition[0] > 1){
-					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("");
+					box.html("");
 					currentPosition[0] -= 1;
 					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("X");
 				}
 				break;
 			case downKey: 
 				if(currentPosition[0] < grid.length){
-					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("");
+					box.html("");
 					currentPosition[0] += 1;
 					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("X");
 				}
 				break;
 		}
-		console.log(currentPosition[0] + ":" + currentPosition[1]);
 	});
 });
