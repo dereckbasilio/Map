@@ -40,7 +40,9 @@ $(document).ready(function(){
 		if(addOrSub) currentPosition[position] += 1;
 		else currentPosition[position] -= 1;
 
-		$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("X");
+		box = $("#" + currentPosition[0] + "_" + currentPosition[1] );
+		box.html("X");
+		box.css("background-color", "green");
 	};
 
 	$(document).keydown(function(e){
