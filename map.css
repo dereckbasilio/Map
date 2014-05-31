@@ -1,0 +1,17 @@
+.container{
+	background-color: green;
+	height: 600px;
+	width: 600px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+	color: white;
+}
+
+.box{
+	float: left;
+}
+
+.box:nth-child(odd){
+	background-color: black;
+}
