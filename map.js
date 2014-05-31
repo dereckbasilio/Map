@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	var size = parseInt($(".container").css("height").replace("px",""));
 
-	var currentPosition = [0,0];
+	var currentPosition = [1,1];
 
 	var leftKey = 37;
 	var upKey = 38;
@@ -18,7 +18,7 @@ $(document).ready(function(){
 			grid.push(row);
 		}
 		return grid;
-	}
+	};
 
 	var displayGrid = function(grid){
 		for(var i = 0; i < grid.length; i++){
@@ -28,24 +28,41 @@ $(document).ready(function(){
 		}
 		$(".box").css("width", size/grid.length);
 		$(".box").css("height", size/grid.length);
-	}
+		$(".container").css("font-size", size/(grid.length*2));
+	};
 
-	grid = generateGrid(5,5);
+	grid = generateGrid(9,9);
 	displayGrid(grid);
 
 	$(document).keyup(function(e){
 		switch(e.which){
 			case leftKey: 
-				if(currentPosition[1] > 0) currentPosition[1] -= 1;
+				if(currentPosition[1] > 1){
+					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("");
+					currentPosition[1] -= 1;
+					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("X");
+				}
 				break;
 			case rightKey: 
-				if(currentPosition[1] < grid[0].length) currentPosition[1] += 1;
+				if(currentPosition[1] < grid[0].length){
+					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("");
+					currentPosition[1] += 1;
+					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("X");
+				}
 				break;
 			case upKey: 
-				if(currentPosition[0] > 0) currentPosition[0] -= 1;
+				if(currentPosition[0] > 1){
+					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("");
+					currentPosition[0] -= 1;
+					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("X");
+				}
 				break;
 			case downKey: 
-				if(currentPosition[0] < grid.length) currentPosition[0] += 1;
+				if(currentPosition[0] < grid.length){
+					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("");
+					currentPosition[0] += 1;
+					$("#" + currentPosition[0] + "_" + currentPosition[1] ).html("X");
+				}
 				break;
 		}
 		console.log(currentPosition[0] + ":" + currentPosition[1]);
