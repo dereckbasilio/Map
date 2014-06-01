@@ -9,6 +9,9 @@ $(document).ready(function(){
 	var xScore = 0;
 	var oScore = 0;
 
+	var numMoves = 100;
+	var stopOppent = false;
+
 	var generateGrid = function(x,y){
 		var grid = [];
 		for(var i = 1; i <= y; i++){
@@ -39,11 +42,16 @@ $(document).ready(function(){
 		else currentPosition[position] -= 1;
 
 		box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
+		
+		if(box.css("background-color") === "rgb(255, 255, 0)") console.log("yellow");
+
 		box.html("X");
 		box.css("background-color", "green");
 
-		moveOppenent();
-		moveOppenent();
+		if(!stopOppent){
+			moveOppenent();
+			moveOppenent();
+		}
 	};
 
 	var moveOppenent = function(){
@@ -66,7 +74,11 @@ $(document).ready(function(){
 	$(document).keydown(function(e){
 		var box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
 
-		switch(e.which){
+		var x = Math.floor((Math.random() * 15) + 1);
+		var y = Math.floor((Math.random() * 15) + 1);
+
+		if(numMoves >= 0){
+			switch(e.which){
 			case leftKey: 
 				if(currentPosition[1] > 1) changePosition(1, box, 0);
 				break;
@@ -79,6 +91,11 @@ $(document).ready(function(){
 			case downKey: 
 				if(currentPosition[0] < grid.length) changePosition(0, box, 1);
 				break;
+			}
+			if(numMoves % 5 === 0){
+				$("#" + x + "_" + y).css("background-color", "yellow");
+			}
+			numMoves--;
 		}
 
 		getScore(xScore, oScore);
