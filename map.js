@@ -54,8 +54,12 @@ $(document).ready(function(){
 		else currentPlayerPosition[position] -= 1;
 
 		box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
+		boxImg = $("#" + box.attr("id") + " img");
 		
-		if(boxImg.attr("src") === "goldStar.png") stopOppent += 4;
+		if(boxImg.attr("src") === "goldStar.png"){
+			stopOppent += 4;
+			console.log("Hit me!");
+		}
 
 		box.css("opacity", "1");
 		box.html("<img src='avatar.png'/>");
@@ -110,7 +114,6 @@ $(document).ready(function(){
 				$("#" + randBox.attr("id") + " img").remove();
 				randBox.css("opacity", "1");
 				randBox.html("<img src='goldStar.png'/>");
-				console.log(star++);
 			}
 			$("img").css({
 				"width": sizeBox,
