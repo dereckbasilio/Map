@@ -44,16 +44,18 @@ $(document).ready(function(){
 	grid = generateGrid(15,15);
 	displayGrid(grid);
 
-	var changePosition = function(position, box, addOrSub){
+	var movePlayer = function(position, box, addOrSub){
+		var boxImg = $("#" + box.attr("id") + " img");
+
 		box.css("opacity", "0");
-		$("#" + box.attr("id") + " img").remove();
+		boxImg.remove();
 
 		if(addOrSub === 1) currentPlayerPosition[position] += 1;
 		else currentPlayerPosition[position] -= 1;
 
 		box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
 		
-		if($("#" + box.attr("id") + " img").attr("src") === "goldStar.png") stopOppent += 4;
+		if(boxImg.attr("src") === "goldStar.png") stopOppent += 4;
 
 		box.css("opacity", "1");
 		box.html("<img src='avatar.png'/>");
@@ -92,16 +94,16 @@ $(document).ready(function(){
 		if(numMoves >= 0){
 			switch(e.which){
 			case leftKey: 
-				if(currentPlayerPosition[1] > 1) changePosition(1, box, 0);
+				if(currentPlayerPosition[1] > 1) movePlayer(1, box, 0);
 				break;
 			case rightKey: 
-				if(currentPlayerPosition[1] < grid[0].length) changePosition(1, box, 1);
+				if(currentPlayerPosition[1] < grid[0].length) movePlayer(1, box, 1);
 				break;
 			case upKey: 
-				if(currentPlayerPosition[0] > 1) changePosition(0, box, 0);
+				if(currentPlayerPosition[0] > 1) movePlayer(0, box, 0);
 				break;
 			case downKey: 
-				if(currentPlayerPosition[0] < grid.length) changePosition(0, box, 1);
+				if(currentPlayerPosition[0] < grid.length) movePlayer(0, box, 1);
 				break;
 			}
 			if(numMoves % 5 === 0){
