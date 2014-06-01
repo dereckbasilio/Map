@@ -45,7 +45,7 @@ $(document).ready(function(){
 
 		box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
 		
-		if(box.css("background-color") === "rgb(255, 255, 0)") stopOppent += 4;
+		if($("#" + currentPosition[0] + "_" + currentPosition[1] + " img").attr("src") === "goldStar.png") stopOppent += 4;
 
 		box.html("X");
 		box.css({
@@ -102,14 +102,16 @@ $(document).ready(function(){
 				break;
 			}
 			if(numMoves % 5 === 0){
-				$("#" + x + "_" + y).css("background-color", "yellow");
+				$("#" + x + "_" + y).html("<img src='goldStar.png'/>");
+				$("img").css({
+					"width": size/grid.length,
+					"height": size/grid.length
+				});
 			}
 			$("#movesLeft").html(numMoves--);
 		}
 
 		getScore(xScore, oScore);
-
-		console.log(currentPosition[0] + ":" + currentPosition[1]);
 	});
 	
 	grid = generateGrid(15,15);
