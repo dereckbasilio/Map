@@ -6,6 +6,9 @@ $(document).ready(function(){
 	var rightKey = 39;
 	var downKey = 40;
 
+	var xScore = 0;
+	var oScore = 0;
+
 	var generateGrid = function(x,y){
 		var grid = [];
 		for(var i = 1; i <= y; i++){
@@ -43,15 +46,15 @@ $(document).ready(function(){
 	var moveOppenent = function(box){
 		box.html("");
 
-		var x = Math.floor((Math.random() * 15));
-		var y = Math.floor((Math.random() * 15));
+		var x = Math.floor((Math.random() * 15) + 1);
+		var y = Math.floor((Math.random() * 15) + 1);
 
 		currentEnemyPosition[0] = x;
 		currentEnemyPosition[1] = y;
 
 		box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
 
-		if(box.css("background-color") === "blue") moveOppenent(box);
+		if(box.css("background-color") === "rgb(0, 0, 255)") moveOppenent(box);
 
 		box.html("O");
 		box.css("background-color", "blue");
@@ -77,7 +80,7 @@ $(document).ready(function(){
 				break;
 		}
 
-		moveOppenent(box);
+		getScore(xScore, oScore);
 	});
 	
 	grid = generateGrid(15,15);
@@ -85,4 +88,17 @@ $(document).ready(function(){
 
 	var currentPosition = [1,1];
 	var currentEnemyPosition = [grid.length, grid.length];
+
+	var getScore =  function(xScore, oScore){
+		
+		for(var i = 0; i < grid.length; i++){
+			for(var j = 0; j < grid[i].length; j++){		
+				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
+				if(box.css("background-color") === "rgb(0, 128, 0)") xScore += 1;
+				if(box.css("background-color") === "rgb(0, 0, 255)") oScore += 1;
+			}
+		}
+		$("#xScore").html(xScore);
+		$("#oScore").html(oScore);
+	};
 });
