@@ -1,5 +1,6 @@
 $(document).ready(function(){
-	var size = parseInt($(".container").css("height").replace("px",""));
+	var sizeContainer = parseInt($(".container").css("height").replace("px",""));
+	var sizeBox = 0;
 
 	var leftKey = 37;
 	var upKey = 38;
@@ -8,6 +9,7 @@ $(document).ready(function(){
 
 	var xScore = 0;
 	var oScore = 0;
+	var star = 0;
 
 	var numMoves = 100;
 	var stopOppent = 0;
@@ -30,21 +32,26 @@ $(document).ready(function(){
 				$(".container").append("<div id=" + grid[i][j][0] + "_" + grid[i][j][1] + " class='box'></div>");
 			}
 		}
+
+		sizeBox = sizeContainer/grid.length;
+
 		$(".box").css({
-			"width": size/grid.length,
-			"height": size/grid.length
+			"width": sizeBox,
+			"height": sizeBox
 		});
-		$(".container").css("font-size", size/(grid.length*2));
 	};
+
+	grid = generateGrid(15,15);
+	displayGrid(grid);
 
 	var changePosition = function(position, box, addOrSub){
 		box.css("opacity", "0");
 		$("#" + box.attr("id") + " img").remove();
 
-		if(addOrSub === 1) currentPosition[position] += 1;
-		else currentPosition[position] -= 1;
+		if(addOrSub === 1) currentPlayerPosition[position] += 1;
+		else currentPlayerPosition[position] -= 1;
 
-		box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
+		box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
 		
 		if($("#" + box.attr("id") + " img").attr("src") === "goldStar.png") stopOppent += 4;
 
@@ -61,8 +68,8 @@ $(document).ready(function(){
 	var moveOppenent = function(){
 		var box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
 
-		var x = Math.floor((Math.random() * 15) + 1);
-		var y = Math.floor((Math.random() * 15) + 1);
+		var x = Math.floor((Math.random() * grid.length) + 1);
+		var y = Math.floor((Math.random() * grid.length) + 1);
 
 		currentEnemyPosition[0] = x;
 		currentEnemyPosition[1] = y;
@@ -76,43 +83,44 @@ $(document).ready(function(){
 	};
 
 	$(document).keydown(function(e){
-		var box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
+		var box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
 
-		var x = Math.floor((Math.random() * 15) + 1);
-		var y = Math.floor((Math.random() * 15) + 1);
+		var x = Math.floor((Math.random() * grid.length) + 1);
+		var y = Math.floor((Math.random() * grid.length) + 1);
+		var randBox = $("#" + x + "_" + y);
 
 		if(numMoves >= 0){
 			switch(e.which){
 			case leftKey: 
-				if(currentPosition[1] > 1) changePosition(1, box, 0);
+				if(currentPlayerPosition[1] > 1) changePosition(1, box, 0);
 				break;
 			case rightKey: 
-				if(currentPosition[1] < grid[0].length) changePosition(1, box, 1);
+				if(currentPlayerPosition[1] < grid[0].length) changePosition(1, box, 1);
 				break;
 			case upKey: 
-				if(currentPosition[0] > 1) changePosition(0, box, 0);
+				if(currentPlayerPosition[0] > 1) changePosition(0, box, 0);
 				break;
 			case downKey: 
-				if(currentPosition[0] < grid.length) changePosition(0, box, 1);
+				if(currentPlayerPosition[0] < grid.length) changePosition(0, box, 1);
 				break;
 			}
 			if(numMoves % 5 === 0){
-				$("#" + x + "_" + y).html("<img src='goldStar.png'/>");
+				$("#" + randBox.attr("id") + " img").remove();
+				randBox.css("opacity", "1");
+				randBox.html("<img src='goldStar.png'/>");
+				console.log(star++);
 			}
 			$("img").css({
-					"width": size/grid.length,
-					"height": size/grid.length
-				});
+				"width": sizeBox,
+				"height": sizeBox
+			});
 			$("#movesLeft").html(numMoves--);
 		}
 
 		getScore(xScore, oScore);
 	});
-	
-	grid = generateGrid(15,15);
-	displayGrid(grid);
 
-	var currentPosition = [1,1];
+	var currentPlayerPosition = [1,1];
 	var currentEnemyPosition = [grid.length, grid.length];
 
 	var getScore =  function(xScore, oScore){
@@ -122,7 +130,6 @@ $(document).ready(function(){
 				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
 				if(box.css("opacity") === "0") xScore += 1;
 				if($("#" + box.attr("id") + " img").attr("src") === "enemy.png") oScore += 1;
-				console.log($("#" + box.attr("id") + "img").attr("src"));
 			}
 		}
 		$("#xScore").html(xScore);
