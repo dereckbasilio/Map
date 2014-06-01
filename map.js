@@ -36,7 +36,7 @@ $(document).ready(function(){
 	};
 
 	var changePosition = function(position, box, addOrSub){
-		box.html("");
+		box.css("opacity", "0");
 
 		if(addOrSub === 1) currentPosition[position] += 1;
 		else currentPosition[position] -= 1;
@@ -47,6 +47,7 @@ $(document).ready(function(){
 
 		box.html("X");
 		box.css("background-color", "green");
+		box.css("opacity", "1");
 
 		if(!(stopOppent > 0)){
 			moveOppenent();
@@ -70,6 +71,7 @@ $(document).ready(function(){
 
 		box.html("O");
 		box.css("background-color", "blue");
+		box.css("opacity", "1");
 	};
 
 	$(document).keydown(function(e){
