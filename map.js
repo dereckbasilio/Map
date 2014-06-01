@@ -60,7 +60,6 @@ $(document).ready(function(){
 
 	var moveOppenent = function(){
 		var box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
-		$("#" + box.attr("id") + " img").remove();
 
 		var x = Math.floor((Math.random() * 15) + 1);
 		var y = Math.floor((Math.random() * 15) + 1);
@@ -70,13 +69,10 @@ $(document).ready(function(){
 
 		box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
 
-		if(box.css("background-color") === "rgb(0, 0, 255)") moveOppenent(box);
+		if($("#" + box.attr("id") + "img").attr("src") === "enemy.png") moveOppenent(box);
 
-		box.html("O");
-		box.css({
-			"background-color": "blue",
-			"opacity": "1"
-		});
+		box.css("opacity", "1");
+		box.html("<img src='enemy.png'/>");
 	};
 
 	$(document).keydown(function(e){
@@ -125,7 +121,8 @@ $(document).ready(function(){
 			for(var j = 0; j < grid[i].length; j++){		
 				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
 				if(box.css("opacity") === "0") xScore += 1;
-				if(box.css("background-color") === "rgb(0, 0, 255)") oScore += 1;
+				if($("#" + box.attr("id") + " img").attr("src") === "enemy.png") oScore += 1;
+				console.log($("#" + box.attr("id") + "img").attr("src"));
 			}
 		}
 		$("#xScore").html(xScore);
