@@ -10,7 +10,7 @@ $(document).ready(function(){
 	var oScore = 0;
 
 	var numMoves = 100;
-	var stopOppent = false;
+	var stopOppent = 0;
 
 	var generateGrid = function(x,y){
 		var grid = [];
@@ -43,15 +43,16 @@ $(document).ready(function(){
 
 		box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
 		
-		if(box.css("background-color") === "rgb(255, 255, 0)") console.log("yellow");
+		if(box.css("background-color") === "rgb(255, 255, 0)") stopOppent += 3;
 
 		box.html("X");
 		box.css("background-color", "green");
 
-		if(!stopOppent){
+		if(!(stopOppent > 0)){
 			moveOppenent();
 			moveOppenent();
 		}
+		else stopOppent--;
 	};
 
 	var moveOppenent = function(){
