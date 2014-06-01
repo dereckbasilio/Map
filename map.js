@@ -39,19 +39,17 @@ $(document).ready(function(){
 
 	var changePosition = function(position, box, addOrSub){
 		box.css("opacity", "0");
+		$("#" + box.attr("id") + " img").remove();
 
 		if(addOrSub === 1) currentPosition[position] += 1;
 		else currentPosition[position] -= 1;
 
 		box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
 		
-		if($("#" + currentPosition[0] + "_" + currentPosition[1] + " img").attr("src") === "goldStar.png") stopOppent += 4;
+		if($("#" + box.attr("id") + " img").attr("src") === "goldStar.png") stopOppent += 4;
 
-		box.html("X");
-		box.css({
-			"background-color": "green",
-			"opacity": "1"
-		});
+		box.css("opacity", "1");
+		box.html("<img src='avatar.png'/>");
 
 		if(!(stopOppent > 0)){
 			moveOppenent();
@@ -62,6 +60,7 @@ $(document).ready(function(){
 
 	var moveOppenent = function(){
 		var box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
+		$("#" + box.attr("id") + " img").remove();
 
 		var x = Math.floor((Math.random() * 15) + 1);
 		var y = Math.floor((Math.random() * 15) + 1);
@@ -103,11 +102,11 @@ $(document).ready(function(){
 			}
 			if(numMoves % 5 === 0){
 				$("#" + x + "_" + y).html("<img src='goldStar.png'/>");
-				$("img").css({
+			}
+			$("img").css({
 					"width": size/grid.length,
 					"height": size/grid.length
 				});
-			}
 			$("#movesLeft").html(numMoves--);
 		}
 
@@ -124,9 +123,9 @@ $(document).ready(function(){
 
 		for(var i = 0; i < grid.length; i++){
 			for(var j = 0; j < grid[i].length; j++){		
-				var bgColor = $("#" + grid[i][j][0] + "_" + grid[i][j][1]).css("background-color");
-				if(bgColor === "rgb(0, 128, 0)") xScore += 1;
-				if(bgColor === "rgb(0, 0, 255)") oScore += 1;
+				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
+				if(box.css("opacity") === "0") xScore += 1;
+				if(box.css("background-color") === "rgb(0, 0, 255)") oScore += 1;
 			}
 		}
 		$("#xScore").html(xScore);
