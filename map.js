@@ -40,24 +40,28 @@ $(document).ready(function(){
 		box.css("background-color", "green");
 	};
 
-	var moveOppenent = function(position, box, addOrSub){
+	var moveOppenent = function(box){
 		box.html("");
 
-		if(addOrSub === 1) currentEnemyPosition[position] += 1;
-		else currentEnemyPosition[position] -= 1;
+		var x = Math.floor((Math.random() * 15));
+		var y = Math.floor((Math.random() * 15));
+
+		currentEnemyPosition[0] = x;
+		currentEnemyPosition[1] = y;
 
 		box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
+
+		if(box.css("background-color") === "blue") moveOppenent(box);
+
 		box.html("O");
 		box.css("background-color", "blue");
 	};
 
 	$(document).keydown(function(e){
 		var box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
-		
-		var pos = Math.floor(Math.random() * 2);
-		var addOrSub = Math.floor(Math.random() * 2);
-		moveOppenent(pos, box, addOrSub);
-		
+
+		moveOppenent(box);
+
 		switch(e.which){
 			case leftKey: 
 				if(currentPosition[1] > 1) changePosition(1, box, 0);
@@ -72,10 +76,8 @@ $(document).ready(function(){
 				if(currentPosition[0] < grid.length) changePosition(0, box, 1);
 				break;
 		}
-		
-		pos = Math.floor(Math.random() * 2);
-		addOrSub = Math.floor(Math.random() * 2);
-		moveOppenent(pos, box, addOrSub);
+
+		moveOppenent(box);
 	});
 	
 	grid = generateGrid(15,15);

@@ -4,13 +4,11 @@
 	height: 600px;
 	width: 600px;
 	
-	top: 0px;
-	left: 0px;
-	position: absolute;
-	
 	color: white;
 	text-align: center;
 	font-family: Times;
+
+	display: inline-block;
 }
 
 .box{
@@ -23,4 +21,8 @@
 
 .box:nth-child(even){
 	background-color: red;
+}
+
+#scores{
+	float: left;
 }
