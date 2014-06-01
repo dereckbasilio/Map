@@ -1,5 +1,6 @@
 .container{
-	background-color: green;
+	background-image: url("http://mypages.valdosta.edu/psmckinley/cat2.jpg");
+	background-size: 600px 600px;
 	
 	height: 600px;
 	width: 600px;

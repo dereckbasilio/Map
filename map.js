@@ -43,7 +43,7 @@ $(document).ready(function(){
 
 		box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
 		
-		if(box.css("background-color") === "rgb(255, 255, 0)") stopOppent += 3;
+		if(box.css("background-color") === "rgb(255, 255, 0)") stopOppent += 4;
 
 		box.html("X");
 		box.css("background-color", "green");
