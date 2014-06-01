@@ -96,7 +96,7 @@ $(document).ready(function(){
 			if(numMoves % 5 === 0){
 				$("#" + x + "_" + y).css("background-color", "yellow");
 			}
-			numMoves--;
+			$("#movesLeft").html(numMoves--);
 		}
 
 		getScore(xScore, oScore);
