@@ -41,10 +41,13 @@ $(document).ready(function(){
 		box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
 		box.html("X");
 		box.css("background-color", "green");
+
+		moveOppenent();
+		moveOppenent();
 	};
 
-	var moveOppenent = function(box){
-		box.html("");
+	var moveOppenent = function(){
+		var box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
 
 		var x = Math.floor((Math.random() * 15) + 1);
 		var y = Math.floor((Math.random() * 15) + 1);
@@ -63,8 +66,6 @@ $(document).ready(function(){
 	$(document).keydown(function(e){
 		var box = $("#" + currentPosition[0] + "_" + currentPosition[1]);
 
-		moveOppenent(box);
-
 		switch(e.which){
 			case leftKey: 
 				if(currentPosition[1] > 1) changePosition(1, box, 0);
@@ -81,6 +82,8 @@ $(document).ready(function(){
 		}
 
 		getScore(xScore, oScore);
+
+		console.log(currentPosition[0] + ":" + currentPosition[1]);
 	});
 	
 	grid = generateGrid(15,15);
