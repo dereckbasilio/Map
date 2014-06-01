@@ -30,8 +30,10 @@ $(document).ready(function(){
 				$(".container").append("<div id=" + grid[i][j][0] + "_" + grid[i][j][1] + " class='box'></div>");
 			}
 		}
-		$(".box").css("width", size/grid.length);
-		$(".box").css("height", size/grid.length);
+		$(".box").css({
+			"width": size/grid.length,
+			"height": size/grid.length
+		});
 		$(".container").css("font-size", size/(grid.length*2));
 	};
 
@@ -46,8 +48,10 @@ $(document).ready(function(){
 		if(box.css("background-color") === "rgb(255, 255, 0)") stopOppent += 4;
 
 		box.html("X");
-		box.css("background-color", "green");
-		box.css("opacity", "1");
+		box.css({
+			"background-color": "green",
+			"opacity": "1"
+		});
 
 		if(!(stopOppent > 0)){
 			moveOppenent();
@@ -70,8 +74,10 @@ $(document).ready(function(){
 		if(box.css("background-color") === "rgb(0, 0, 255)") moveOppenent(box);
 
 		box.html("O");
-		box.css("background-color", "blue");
-		box.css("opacity", "1");
+		box.css({
+			"background-color": "blue",
+			"opacity": "1"
+		});
 	};
 
 	$(document).keydown(function(e){
@@ -113,12 +119,12 @@ $(document).ready(function(){
 	var currentEnemyPosition = [grid.length, grid.length];
 
 	var getScore =  function(xScore, oScore){
-		
+
 		for(var i = 0; i < grid.length; i++){
 			for(var j = 0; j < grid[i].length; j++){		
-				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
-				if(box.css("background-color") === "rgb(0, 128, 0)") xScore += 1;
-				if(box.css("background-color") === "rgb(0, 0, 255)") oScore += 1;
+				var bgColor = $("#" + grid[i][j][0] + "_" + grid[i][j][1]).css("background-color");
+				if(bgColor === "rgb(0, 128, 0)") xScore += 1;
+				if(bgColor === "rgb(0, 0, 255)") oScore += 1;
 			}
 		}
 		$("#xScore").html(xScore);
