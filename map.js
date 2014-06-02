@@ -7,8 +7,8 @@ $(document).ready(function(){
 	var rightKey = 39;
 	var downKey = 40;
 
-	var xScore = 0;
-	var oScore = 0;
+	var playerScore = 0;
+	var enemyScore = 0;
 	var star = 0;
 
 	var numMoves = 100;
@@ -41,8 +41,16 @@ $(document).ready(function(){
 		});
 	};
 
+	$("#playerScore").html(playerScore);
+	$("#enemyScore").html(enemyScore);
+
+	$("#movesLeft").html(numMoves);
+
 	grid = generateGrid(15,15);
 	displayGrid(grid);
+
+	var currentPlayerPosition = [1,1];
+	var currentEnemyPosition = [grid.length, grid.length];
 
 	var changePosition = function(position, box, addOrSub){
 		box.css("opacity", "0");
@@ -82,6 +90,19 @@ $(document).ready(function(){
 		box.html("<img src='enemy.png'/>");
 	};
 
+	var getScore =  function(playerScore, enemyScore){
+
+		for(var i = 0; i < grid.length; i++){
+			for(var j = 0; j < grid[i].length; j++){		
+				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
+				if(box.css("opacity") === "0") playerScore += 1;
+				if($("#" + box.attr("id") + " img").attr("src") === "enemy.png") enemyScore += 1;
+			}
+		}
+		$("#playerScore").html(playerScore);
+		$("#enemyScore").html(enemyScore);
+	};
+
 	$(document).keydown(function(e){
 		var box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
 
@@ -117,22 +138,29 @@ $(document).ready(function(){
 			$("#movesLeft").html(numMoves--);
 		}
 
-		getScore(xScore, oScore);
+		getScore(playerScore, enemyScore);
 	});
 
-	var currentPlayerPosition = [1,1];
-	var currentEnemyPosition = [grid.length, grid.length];
-
-	var getScore =  function(xScore, oScore){
-
+	$("#reset").click(function(){
 		for(var i = 0; i < grid.length; i++){
 			for(var j = 0; j < grid[i].length; j++){		
 				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
-				if(box.css("opacity") === "0") xScore += 1;
-				if($("#" + box.attr("id") + " img").attr("src") === "enemy.png") oScore += 1;
+				box.css("opacity", 1);
+				$("#" + box.attr("id") + " img").remove();
 			}
 		}
-		$("#xScore").html(xScore);
-		$("#oScore").html(oScore);
-	};
+
+		currentPlayerPosition = [1,1];
+		currentEnemyPosition = [grid.length, grid.length];
+
+		playerScore = 0;
+		enemyScore = 0;
+
+		$("#playerScore").html(playerScore);
+		$("#enemyScore").html(enemyScore);
+
+		numMoves = 100;
+
+		$("#movesLeft").html(numMoves);
+	});
 });
