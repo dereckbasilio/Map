@@ -10,7 +10,7 @@ $(document).ready(function(){
 	var playerScore = 0;
 	var enemyScore = 0;
 	var spacesAvailable = 0;
-	var starValue = 0;
+	var starValue = 3;
 
 	var numMoves = 50;
 	var stopOppent = 0;
@@ -142,6 +142,25 @@ $(document).ready(function(){
 		$("#spacesAvailable").html(spacesAvailable);
 	};
 
+	var changeLevel = function(NumMoves, gridSize, StarValue){
+		$(".box").remove();
+
+		numMoves = NumMoves;
+		playerScore = 0;
+		enemyScore = 0;
+		grid = generateGrid(gridSize);
+		spacesAvailable = grid.length * grid.length;
+		starValue = StarValue;
+		currentPlayerPosition = [1,1];
+		currentEnemyPosition = [grid.length, grid.length];
+
+		$("#movesLeft").html(numMoves);
+		$("#playerScore").html(playerScore);
+		$("#enemyScore").html(enemyScore);
+		$("#spacesAvailable").html(spacesAvailable);
+		displayGrid(grid);
+	};
+
 	$(document).keydown(function(e){
 
 		if(numMoves >= 0){
@@ -163,59 +182,14 @@ $(document).ready(function(){
 	});
 
 	$("#easy").click(function(){
-		$(".box").remove();
-
-		numMoves = 50;
-		playerScore = 0;
-		enemyScore = 0;
-		grid = generateGrid(5);
-		spacesAvailable = grid.length * grid.length;
-		starValue = 3;
-		currentPlayerPosition = [1,1];
-		currentEnemyPosition = [grid.length, grid.length];
-
-		$("#movesLeft").html(numMoves);
-		$("#playerScore").html(playerScore);
-		$("#enemyScore").html(enemyScore);
-		$("#spacesAvailable").html(spacesAvailable);
-		displayGrid(grid);
+		changeLevel(50, 5, 3);
 	});
 
 	$("#normal").click(function(){
-		$(".box").remove();
-
-		numMoves = 75;
-		playerScore = 0;
-		enemyScore = 0;
-		grid = generateGrid(15);
-		spacesAvailable = grid.length * grid.length;
-		starValue = 4;
-		currentPlayerPosition = [1,1];
-		currentEnemyPosition = [grid.length, grid.length];
-
-		$("#movesLeft").html(numMoves);
-		$("#playerScore").html(playerScore);
-		$("#enemyScore").html(enemyScore);
-		$("#spacesAvailable").html(spacesAvailable);
-		displayGrid(grid);
+		changeLevel(75, 15, 4);
 	});
 
 	$("#hard").click(function(){
-		$(".box").remove();
-
-		numMoves = 100;
-		playerScore = 0;
-		enemyScore = 0;
-		grid = generateGrid(25);
-		spacesAvailable = grid.length * grid.length;
-		starValue = 5;
-		currentPlayerPosition = [1,1];
-		currentEnemyPosition = [grid.length, grid.length];
-
-		$("#movesLeft").html(numMoves);
-		$("#playerScore").html(playerScore);
-		$("#enemyScore").html(enemyScore);
-		$("#spacesAvailable").html(spacesAvailable);
-		displayGrid(grid);
+		changeLevel(100, 25, 5);
 	});
 });
