@@ -9,16 +9,16 @@ $(document).ready(function(){
 
 	var playerScore = 0;
 	var enemyScore = 0;
-	var star = 0;
+	var starValue = 0;
 
-	var numMoves = 100;
+	var numMoves = 50;
 	var stopOppent = 0;
 
-	var generateGrid = function(x,y){
+	var generateGrid = function(size){
 		var grid = [];
-		for(var i = 1; i <= y; i++){
+		for(var i = 1; i <= size; i++){
 			var row = [];
-			for(var j = 1; j <= x; j++){		
+			for(var j = 1; j <= size; j++){		
 				row.push([i,j]);
 			}
 			grid.push(row);
@@ -46,7 +46,7 @@ $(document).ready(function(){
 
 	$("#movesLeft").html(numMoves);
 
-	grid = generateGrid(15,15);
+	grid = generateGrid(5);
 	displayGrid(grid);
 
 	var currentPlayerPosition = [1,1];
@@ -65,7 +65,7 @@ $(document).ready(function(){
 		boxImg = $("#" + box.attr("id") + " img");
 		
 		if(boxImg.attr("src") === "goldStar.png"){
-			stopOppent += 4;
+			stopOppent += starValue;
 			console.log("Hit me!");
 		}
 
@@ -144,6 +144,51 @@ $(document).ready(function(){
 		}
 
 		getScore(playerScore, enemyScore);
+	});
+
+	$("#easy").click(function(){
+		$(".box").remove();
+
+		numMoves = 50;
+		playerScore = 0;
+		enemyScore = 0;
+		grid = generateGrid(5);
+		starValue = 3;
+
+		$("#movesLeft").html(numMoves);
+		$("#playerScore").html(playerScore);
+		$("#enemyScore").html(enemyScore);
+		displayGrid(grid);
+	});
+
+	$("#normal").click(function(){
+		$(".box").remove();
+
+		numMoves = 75;
+		playerScore = 0;
+		enemyScore = 0;
+		grid = generateGrid(15);
+		starValue = 4;
+
+		$("#movesLeft").html(numMoves);
+		$("#playerScore").html(playerScore);
+		$("#enemyScore").html(enemyScore);
+		displayGrid(grid);
+	});
+
+	$("#hard").click(function(){
+		$(".box").remove();
+
+		numMoves = 100;
+		playerScore = 0;
+		enemyScore = 0;
+		grid = generateGrid(25);
+		starValue = 5;
+
+		$("#movesLeft").html(numMoves);
+		$("#playerScore").html(playerScore);
+		$("#enemyScore").html(enemyScore);
+		displayGrid(grid);
 	});
 
 	$("#reset").click(function(){
