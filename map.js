@@ -196,27 +196,4 @@ $(document).ready(function(){
 		$("#enemyScore").html(enemyScore);
 		displayGrid(grid);
 	});
-
-	$("#reset").click(function(){
-		for(var i = 0; i < grid.length; i++){
-			for(var j = 0; j < grid[i].length; j++){		
-				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
-				box.css("opacity", 1);
-				$("#" + box.attr("id") + " img").remove();
-			}
-		}
-
-		currentPlayerPosition = [1,1];
-		currentEnemyPosition = [grid.length, grid.length];
-
-		playerScore = 0;
-		enemyScore = 0;
-
-		$("#playerScore").html(playerScore);
-		$("#enemyScore").html(enemyScore);
-
-		numMoves = 100;
-
-		$("#movesLeft").html(numMoves);
-	});
 });
