@@ -24,6 +24,6 @@
 	background-color: red;
 }
 
-#scores{
+#scores, .lev, .container{
 	float: left;
 }
