@@ -154,6 +154,8 @@ $(document).ready(function(){
 		enemyScore = 0;
 		grid = generateGrid(5);
 		starValue = 3;
+		currentPlayerPosition = [1,1];
+		currentEnemyPosition = [grid.length, grid.length];
 
 		$("#movesLeft").html(numMoves);
 		$("#playerScore").html(playerScore);
@@ -169,6 +171,8 @@ $(document).ready(function(){
 		enemyScore = 0;
 		grid = generateGrid(15);
 		starValue = 4;
+		currentPlayerPosition = [1,1];
+		currentEnemyPosition = [grid.length, grid.length];
 
 		$("#movesLeft").html(numMoves);
 		$("#playerScore").html(playerScore);
@@ -184,6 +188,8 @@ $(document).ready(function(){
 		enemyScore = 0;
 		grid = generateGrid(25);
 		starValue = 5;
+		currentPlayerPosition = [1,1];
+		currentEnemyPosition = [grid.length, grid.length];
 
 		$("#movesLeft").html(numMoves);
 		$("#playerScore").html(playerScore);
