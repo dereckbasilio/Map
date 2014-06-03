@@ -27,3 +27,7 @@
 #scores, .lev, .container{
 	float: left;
 }
+
+hr{
+	width: 90%;
+}
