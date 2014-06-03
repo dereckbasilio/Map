@@ -9,6 +9,7 @@ $(document).ready(function(){
 
 	var playerScore = 0;
 	var enemyScore = 0;
+	var spacesAvailable = 0;
 	var starValue = 0;
 
 	var numMoves = 50;
@@ -41,18 +42,28 @@ $(document).ready(function(){
 		});
 	};
 
+	grid = generateGrid(5);
+	displayGrid(grid);
+
+	spacesAvailable = grid.length * grid.length;
+
+	var currentPlayerPosition = [1,1];
+	var currentEnemyPosition = [grid.length, grid.length];
+
 	$("#playerScore").html(playerScore);
 	$("#enemyScore").html(enemyScore);
 
 	$("#movesLeft").html(numMoves);
 
-	grid = generateGrid(5);
-	displayGrid(grid);
+	$("#spacesAvailable").html(spacesAvailable);
 
-	var currentPlayerPosition = [1,1];
-	var currentEnemyPosition = [grid.length, grid.length];
+	var movePlayer = function(position, addOrSub){
+		var box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
 
-	var movePlayer = function(position, box, addOrSub){
+		var x = Math.floor((Math.random() * grid.length) + 1);
+		var y = Math.floor((Math.random() * grid.length) + 1);
+		var randBox = $("#" + x + "_" + y);
+
 		var boxImg = $("#" + box.attr("id") + " img");
 
 		box.css("opacity", "0");
@@ -77,6 +88,20 @@ $(document).ready(function(){
 			moveOppenent();
 		}
 		else stopOppent--;
+
+		if(numMoves % 5 === 0){
+			$("#" + randBox.attr("id") + " img").remove();
+			randBox.css("opacity", "1");
+			randBox.html("<img src='goldStar.png'/>");
+		}
+		$("img").css({
+			"width": sizeBox,
+			"height": sizeBox
+		});
+		$("#movesLeft").html(numMoves--);
+
+		getScore(playerScore, enemyScore);
+
 	};
 
 	var moveOppenent = function(){
@@ -97,53 +122,44 @@ $(document).ready(function(){
 	};
 
 	var getScore =  function(playerScore, enemyScore){
+		spacesAvailable = grid.length * grid.length;
 
 		for(var i = 0; i < grid.length; i++){
 			for(var j = 0; j < grid[i].length; j++){		
 				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
-				if(box.css("opacity") === "0") playerScore += 1;
-				if($("#" + box.attr("id") + " img").attr("src") === "enemy.png") enemyScore += 1;
+				if(box.css("opacity") === "0" || $("#" + box.attr("id") + " img").attr("src") === "avatar.png"){
+					playerScore += 1;
+					spacesAvailable-=1;
+				}
+				if($("#" + box.attr("id") + " img").attr("src") === "enemy.png"){
+					enemyScore += 1;
+					spacesAvailable-=1;
+				}
 			}
 		}
 		$("#playerScore").html(playerScore);
 		$("#enemyScore").html(enemyScore);
+		$("#spacesAvailable").html(spacesAvailable);
 	};
 
 	$(document).keydown(function(e){
-		var box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
-
-		var x = Math.floor((Math.random() * grid.length) + 1);
-		var y = Math.floor((Math.random() * grid.length) + 1);
-		var randBox = $("#" + x + "_" + y);
 
 		if(numMoves >= 0){
 			switch(e.which){
 			case leftKey: 
-				if(currentPlayerPosition[1] > 1) movePlayer(1, box, 0);
+				if(currentPlayerPosition[1] > 1) movePlayer(1, 0);
 				break;
 			case rightKey: 
-				if(currentPlayerPosition[1] < grid[0].length) movePlayer(1, box, 1);
+				if(currentPlayerPosition[1] < grid[0].length) movePlayer(1, 1);
 				break;
 			case upKey: 
-				if(currentPlayerPosition[0] > 1) movePlayer(0, box, 0);
+				if(currentPlayerPosition[0] > 1) movePlayer(0, 0);
 				break;
 			case downKey: 
-				if(currentPlayerPosition[0] < grid.length) movePlayer(0, box, 1);
+				if(currentPlayerPosition[0] < grid.length) movePlayer(0, 1);
 				break;
 			}
-			if(numMoves % 5 === 0){
-				$("#" + randBox.attr("id") + " img").remove();
-				randBox.css("opacity", "1");
-				randBox.html("<img src='goldStar.png'/>");
-			}
-			$("img").css({
-				"width": sizeBox,
-				"height": sizeBox
-			});
-			$("#movesLeft").html(numMoves--);
 		}
-
-		getScore(playerScore, enemyScore);
 	});
 
 	$("#easy").click(function(){
@@ -153,6 +169,7 @@ $(document).ready(function(){
 		playerScore = 0;
 		enemyScore = 0;
 		grid = generateGrid(5);
+		spacesAvailable = grid.length * grid.length;
 		starValue = 3;
 		currentPlayerPosition = [1,1];
 		currentEnemyPosition = [grid.length, grid.length];
@@ -160,6 +177,7 @@ $(document).ready(function(){
 		$("#movesLeft").html(numMoves);
 		$("#playerScore").html(playerScore);
 		$("#enemyScore").html(enemyScore);
+		$("#spacesAvailable").html(spacesAvailable);
 		displayGrid(grid);
 	});
 
@@ -170,6 +188,7 @@ $(document).ready(function(){
 		playerScore = 0;
 		enemyScore = 0;
 		grid = generateGrid(15);
+		spacesAvailable = grid.length * grid.length;
 		starValue = 4;
 		currentPlayerPosition = [1,1];
 		currentEnemyPosition = [grid.length, grid.length];
@@ -177,6 +196,7 @@ $(document).ready(function(){
 		$("#movesLeft").html(numMoves);
 		$("#playerScore").html(playerScore);
 		$("#enemyScore").html(enemyScore);
+		$("#spacesAvailable").html(spacesAvailable);
 		displayGrid(grid);
 	});
 
@@ -187,6 +207,7 @@ $(document).ready(function(){
 		playerScore = 0;
 		enemyScore = 0;
 		grid = generateGrid(25);
+		spacesAvailable = grid.length * grid.length;
 		starValue = 5;
 		currentPlayerPosition = [1,1];
 		currentEnemyPosition = [grid.length, grid.length];
@@ -194,6 +215,7 @@ $(document).ready(function(){
 		$("#movesLeft").html(numMoves);
 		$("#playerScore").html(playerScore);
 		$("#enemyScore").html(enemyScore);
+		$("#spacesAvailable").html(spacesAvailable);
 		displayGrid(grid);
 	});
 });
