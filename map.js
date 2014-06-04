@@ -153,14 +153,15 @@ $(document).ready(function(){
 		$(".box").remove();
 
 		$(".container").html(
-			"<h1>Spaces Owned " + playerOwned + " X 10: " + spacesScore + "</h1>" +
+			"<div class='center' id='score'><h1>Spaces Owned " + playerOwned + " X 10: " + spacesScore + "</h1>" +
 			"<h1>Stars Collected " + starsCollected + " X 3: " + bonus + "</h1>" +
-			"<h1>Total Score: " + finalScore + "</h1>"
+			"<h1>Total Score: " + finalScore + "</h1></div>"
 
 		);
 	};
 
 	var changeLevel = function(NumMoves, gridSize, StarValue){
+		$("#score").remove();
 		$(".box").remove();
 
 		numMoves = NumMoves;
