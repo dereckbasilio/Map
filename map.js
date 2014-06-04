@@ -7,10 +7,12 @@ $(document).ready(function(){
 	var rightKey = 39;
 	var downKey = 40;
 
-	var playerScore = 0;
-	var enemyScore = 0;
+	var playerOwned = 0;
+	var enemyOwned = 0;
+	var finalScore = 0;
 	var spacesAvailable = 0;
 	var starValue = 3;
+	var starsCollected = 0;
 
 	var numMoves = 50;
 	var stopOppent = 0;
@@ -50,8 +52,8 @@ $(document).ready(function(){
 	var currentPlayerPosition = [1,1];
 	var currentEnemyPosition = [grid.length, grid.length];
 
-	$("#playerScore").html(playerScore);
-	$("#enemyScore").html(enemyScore);
+	$("#playerOwned").html(playerOwned);
+	$("#enemyOwned").html(enemyOwned);
 
 	$("#movesLeft").html(numMoves);
 
@@ -100,7 +102,7 @@ $(document).ready(function(){
 		});
 		$("#movesLeft").html(numMoves--);
 
-		getScore(playerScore, enemyScore);
+		getSpaces(playerOwned, enemyOwned);
 
 	};
 
@@ -121,33 +123,43 @@ $(document).ready(function(){
 		box.html("<img src='enemy.png'/>");
 	};
 
-	var getScore =  function(playerScore, enemyScore){
+	var getSpaces =  function(playerOwned, enemyOwned){
 		spacesAvailable = grid.length * grid.length;
 
 		for(var i = 0; i < grid.length; i++){
 			for(var j = 0; j < grid[i].length; j++){		
 				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
 				if(box.css("opacity") === "0" || $("#" + box.attr("id") + " img").attr("src") === "avatar.png"){
-					playerScore += 1;
+					playerOwned += 1;
 					spacesAvailable-=1;
 				}
 				if($("#" + box.attr("id") + " img").attr("src") === "enemy.png"){
-					enemyScore += 1;
+					enemyOwned += 1;
 					spacesAvailable-=1;
 				}
 			}
 		}
-		$("#playerScore").html(playerScore);
-		$("#enemyScore").html(enemyScore);
+		$("#playerOwned").html(playerOwned);
+		$("#enemyOwned").html(enemyOwned);
 		$("#spacesAvailable").html(spacesAvailable);
+	};
+
+	var getFinalScore = function(){
+		var spacesScore = playerOwned * 10;
+		var bonus = starsCollected * 3;
+		finalScore = spacesScore + bonus;
+
+		$("#spacesScore").html(spacesScore);
+		$("#starsCollected").html(starsCollected);
+		$("#finalScore").html(finalScore);
 	};
 
 	var changeLevel = function(NumMoves, gridSize, StarValue){
 		$(".box").remove();
 
 		numMoves = NumMoves;
-		playerScore = 0;
-		enemyScore = 0;
+		playerOwned = 0;
+		enemyOwned = 0;
 		grid = generateGrid(gridSize);
 		spacesAvailable = grid.length * grid.length;
 		starValue = StarValue;
@@ -155,8 +167,8 @@ $(document).ready(function(){
 		currentEnemyPosition = [grid.length, grid.length];
 
 		$("#movesLeft").html(numMoves);
-		$("#playerScore").html(playerScore);
-		$("#enemyScore").html(enemyScore);
+		$("#playerOwned").html(playerOwned);
+		$("#enemyOwned").html(enemyOwned);
 		$("#spacesAvailable").html(spacesAvailable);
 		displayGrid(grid);
 	};
