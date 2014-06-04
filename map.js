@@ -197,7 +197,6 @@ $(document).ready(function(){
 				if(currentPlayerPosition[0] < grid.length) movePlayer(0, 1);
 				break;
 			}
-		console.log(playerOwned);
 		}
 		else getFinalScore();
 	});
