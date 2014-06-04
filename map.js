@@ -79,7 +79,7 @@ $(document).ready(function(){
 		
 		if(boxImg.attr("src") === "goldStar.png"){
 			stopOppent += starValue;
-			console.log("Hit me!");
+			starsCollected += 1;
 		}
 
 		box.css("opacity", "1");
@@ -102,8 +102,7 @@ $(document).ready(function(){
 		});
 		$("#movesLeft").html(numMoves--);
 
-		getSpaces(playerOwned, enemyOwned);
-
+		getSpaces();
 	};
 
 	var moveOppenent = function(){
@@ -123,19 +122,21 @@ $(document).ready(function(){
 		box.html("<img src='enemy.png'/>");
 	};
 
-	var getSpaces =  function(playerOwned, enemyOwned){
+	var getSpaces =  function(){
 		spacesAvailable = grid.length * grid.length;
+		playerOwned = 0;
+		enemyOwned = 0;
 
 		for(var i = 0; i < grid.length; i++){
 			for(var j = 0; j < grid[i].length; j++){		
 				var box = $("#" + grid[i][j][0] + "_" + grid[i][j][1]);
 				if(box.css("opacity") === "0" || $("#" + box.attr("id") + " img").attr("src") === "avatar.png"){
 					playerOwned += 1;
-					spacesAvailable-=1;
+					spacesAvailable -= 1;
 				}
 				if($("#" + box.attr("id") + " img").attr("src") === "enemy.png"){
 					enemyOwned += 1;
-					spacesAvailable-=1;
+					spacesAvailable -= 1;
 				}
 			}
 		}
@@ -149,9 +150,14 @@ $(document).ready(function(){
 		var bonus = starsCollected * 3;
 		finalScore = spacesScore + bonus;
 
-		$("#spacesScore").html(spacesScore);
-		$("#starsCollected").html(starsCollected);
-		$("#finalScore").html(finalScore);
+		$(".box").remove();
+
+		$(".container").html(
+			"<h1>Spaces Owned " + playerOwned + " X 10: " + spacesScore + "</h1>" +
+			"<h1>Stars Collected " + starsCollected + " X 3: " + bonus + "</h1>" +
+			"<h1>Total Score: " + finalScore + "</h1>"
+
+		);
 	};
 
 	var changeLevel = function(NumMoves, gridSize, StarValue){
@@ -190,7 +196,9 @@ $(document).ready(function(){
 				if(currentPlayerPosition[0] < grid.length) movePlayer(0, 1);
 				break;
 			}
+		console.log(playerOwned);
 		}
+		else getFinalScore();
 	});
 
 	$("#easy").click(function(){
