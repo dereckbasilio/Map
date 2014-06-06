@@ -158,14 +158,21 @@ $(document).ready(function(){
 
 	var getFinalScore = function(){
 		var spacesScore = playerOwned * 10;
-		var bonus = snailsCollected * 3;
-		finalScore = spacesScore + bonus;
+		var snailBonus = snailsCollected * 3;
+		var clockBonus = clocksCollected * 3;
+
+		var winBonus = 1;
+		if(playerOwned > enemyOwned) winBonus = 2;
+
+		finalScore = (spacesScore + snailBonus + clockBonus) * winBonus;
 
 		$(".box").remove();
 
 		$(".container").html(
 			"<div class='center' id='score'><h1>Spaces Owned " + playerOwned + " X 10: " + spacesScore + "</h1>" +
-			"<h1>Snails Collected " + snailsCollected + " X 3: " + bonus + "</h1>" +
+			"<h1>Snails Collected " + snailsCollected + " X 3: " + snailBonus + "</h1>" +
+			"<h1>Clocks Collected " + clocksCollected + " X 3: " + clockBonus + "</h1>" +
+			"<h1>Win Bonus: X" + winBonus + "</h1>" +
 			"<h1>Total Score: " + finalScore + "</h1></div>"
 
 		);
