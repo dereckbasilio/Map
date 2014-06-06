@@ -65,13 +65,7 @@ $(document).ready(function(){
 	var movePlayer = function(position, addOrSub){
 		var box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
 
-		var x = Math.floor((Math.random() * grid.length) + 1);
-		var y = Math.floor((Math.random() * grid.length) + 1);
-		var randBox = $("#" + x + "_" + y);
-
 		var boxImg = $("#" + box.attr("id") + " img");
-
-		var collectables = ["<img src='snail.png'/>", "<img src='clock.png'/>"];
 
 		box.css("opacity", "0");
 		boxImg.remove();
@@ -81,7 +75,58 @@ $(document).ready(function(){
 
 		box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
 		boxImg = $("#" + box.attr("id") + " img");
-		
+
+		if(!(stopOppent > 0)){
+			moveOppenent();
+			moveOppenent();
+		}
+		else stopOppent--;
+
+		if(numMoves % 5 === 0) placeCollectable();
+
+		runCollectablePower(boxImg);
+
+		box.css("opacity", "1");
+		box.html("<img src='avatar.png'/>");
+
+		$("img").css({
+			"width": sizeBox,
+			"height": sizeBox
+		});
+
+		$("#movesLeft").html(--numMoves);
+
+		getSpaces();
+	};
+
+	var moveOppenent = function(){
+		var x = Math.floor((Math.random() * grid.length) + 1);
+		var y = Math.floor((Math.random() * grid.length) + 1);
+
+		currentEnemyPosition[0] = x;
+		currentEnemyPosition[1] = y;
+
+		var box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
+
+		box.css("opacity", "1");
+		box.html("<img src='enemy.png'/>");
+	};
+
+	var placeCollectable = function(){
+		var collectables = ["<img src='snail.png'/>", "<img src='clock.png'/>"];
+
+		var x = Math.floor((Math.random() * grid.length) + 1);
+		var y = Math.floor((Math.random() * grid.length) + 1);
+		var randBox = $("#" + x + "_" + y);
+
+		var randCollectable = Math.floor((Math.random() * 2));
+
+		$("#" + randBox.attr("id") + " img").remove();
+		randBox.css("opacity", "1");
+		randBox.html(collectables[randCollectable]);
+	};
+
+	var runCollectablePower= function(boxImg){
 		if(boxImg.attr("src") === "snail.png"){
 			stopOppent += snailValue;
 			snailsCollected += 1;
@@ -90,47 +135,6 @@ $(document).ready(function(){
 			numMoves += clockValue;
 			clocksCollected += 1;
 		}
-
-		box.css("opacity", "1");
-		box.html("<img src='avatar.png'/>");
-
-		if(!(stopOppent > 0)){
-			moveOppenent();
-			moveOppenent();
-		}
-		else stopOppent--;
-
-		if(numMoves % 5 === 0){
-			var randCollectable = Math.floor((Math.random() * 2));
-
-			$("#" + randBox.attr("id") + " img").remove();
-			randBox.css("opacity", "1");
-			randBox.html(collectables[randCollectable]);
-		}
-		$("img").css({
-			"width": sizeBox,
-			"height": sizeBox
-		});
-		$("#movesLeft").html(numMoves--);
-
-		getSpaces();
-	};
-
-	var moveOppenent = function(){
-		var box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
-
-		var x = Math.floor((Math.random() * grid.length) + 1);
-		var y = Math.floor((Math.random() * grid.length) + 1);
-
-		currentEnemyPosition[0] = x;
-		currentEnemyPosition[1] = y;
-
-		box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
-
-		if($("#" + box.attr("id") + "img").attr("src") === "enemy.png" || $("#" + box.attr("id") + "img").attr("src") === "avatar.png") moveOppenent(box);
-
-		box.css("opacity", "1");
-		box.html("<img src='enemy.png'/>");
 	};
 
 	var getSpaces =  function(){
@@ -172,7 +176,7 @@ $(document).ready(function(){
 			"<div class='center' id='score'><h1>Spaces Owned " + playerOwned + " X 10: " + spacesScore + "</h1>" +
 			"<h1>Snails Collected " + snailsCollected + " X 3: " + snailBonus + "</h1>" +
 			"<h1>Clocks Collected " + clocksCollected + " X 3: " + clockBonus + "</h1>" +
-			"<h1>Win Bonus: X" + winBonus + "</h1>" +
+			"<h1>Win Bonus: X " + winBonus + "</h1>" +
 			"<h1>Total Score: " + finalScore + "</h1></div>"
 
 		);
@@ -201,7 +205,7 @@ $(document).ready(function(){
 
 	$(document).keydown(function(e){
 
-		if(numMoves >= 0){
+		if(numMoves > 0){
 			switch(e.which){
 			case leftKey: 
 				if(currentPlayerPosition[1] > 1) movePlayer(1, 0);
