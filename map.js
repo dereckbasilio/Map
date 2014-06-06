@@ -11,8 +11,8 @@ $(document).ready(function(){
 	var enemyOwned = 0;
 	var finalScore = 0;
 	var spacesAvailable = 0;
-	var starValue = 3;
-	var starsCollected = 0;
+	var snailValue = 3;
+	var snailsCollected = 0;
 
 	var numMoves = 50;
 	var stopOppent = 0;
@@ -77,9 +77,9 @@ $(document).ready(function(){
 		box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
 		boxImg = $("#" + box.attr("id") + " img");
 		
-		if(boxImg.attr("src") === "goldStar.png"){
-			stopOppent += starValue;
-			starsCollected += 1;
+		if(boxImg.attr("src") === "snail.png"){
+			stopOppent += snailValue;
+			snailsCollected += 1;
 		}
 
 		box.css("opacity", "1");
@@ -94,7 +94,7 @@ $(document).ready(function(){
 		if(numMoves % 5 === 0){
 			$("#" + randBox.attr("id") + " img").remove();
 			randBox.css("opacity", "1");
-			randBox.html("<img src='goldStar.png'/>");
+			randBox.html("<img src='snail.png'/>");
 		}
 		$("img").css({
 			"width": sizeBox,
@@ -147,20 +147,20 @@ $(document).ready(function(){
 
 	var getFinalScore = function(){
 		var spacesScore = playerOwned * 10;
-		var bonus = starsCollected * 3;
+		var bonus = snailsCollected * 3;
 		finalScore = spacesScore + bonus;
 
 		$(".box").remove();
 
 		$(".container").html(
 			"<div class='center' id='score'><h1>Spaces Owned " + playerOwned + " X 10: " + spacesScore + "</h1>" +
-			"<h1>Stars Collected " + starsCollected + " X 3: " + bonus + "</h1>" +
+			"<h1>Snails Collected " + snailsCollected + " X 3: " + bonus + "</h1>" +
 			"<h1>Total Score: " + finalScore + "</h1></div>"
 
 		);
 	};
 
-	var changeLevel = function(NumMoves, gridSize, StarValue){
+	var changeLevel = function(NumMoves, gridSize, snailValue){
 		$("#score").remove();
 		$(".box").remove();
 
@@ -169,7 +169,7 @@ $(document).ready(function(){
 		enemyOwned = 0;
 		grid = generateGrid(gridSize);
 		spacesAvailable = grid.length * grid.length;
-		starValue = StarValue;
+		snailValue = snailValue;
 		currentPlayerPosition = [1,1];
 		currentEnemyPosition = [grid.length, grid.length];
 
