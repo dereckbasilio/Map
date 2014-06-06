@@ -127,7 +127,7 @@ $(document).ready(function(){
 
 		box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
 
-		if($("#" + box.attr("id") + "img").attr("src") === "enemy.png") moveOppenent(box);
+		if($("#" + box.attr("id") + "img").attr("src") === "enemy.png" || $("#" + box.attr("id") + "img").attr("src") === "avatar.png") moveOppenent(box);
 
 		box.css("opacity", "1");
 		box.html("<img src='enemy.png'/>");
