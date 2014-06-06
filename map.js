@@ -11,8 +11,11 @@ $(document).ready(function(){
 	var enemyOwned = 0;
 	var finalScore = 0;
 	var spacesAvailable = 0;
+
 	var snailValue = 3;
 	var snailsCollected = 0;
+	var clockValue = 3;
+	var clocksCollected = 0;
 
 	var numMoves = 50;
 	var stopOppent = 0;
@@ -68,6 +71,8 @@ $(document).ready(function(){
 
 		var boxImg = $("#" + box.attr("id") + " img");
 
+		var collectables = ["<img src='snail.png'/>", "<img src='clock.png'/>"];
+
 		box.css("opacity", "0");
 		boxImg.remove();
 
@@ -81,6 +86,10 @@ $(document).ready(function(){
 			stopOppent += snailValue;
 			snailsCollected += 1;
 		}
+		else if(boxImg.attr("src") === "clock.png"){
+			numMoves += clockValue;
+			clocksCollected += 1;
+		}
 
 		box.css("opacity", "1");
 		box.html("<img src='avatar.png'/>");
@@ -92,9 +101,11 @@ $(document).ready(function(){
 		else stopOppent--;
 
 		if(numMoves % 5 === 0){
+			var randCollectable = Math.floor((Math.random() * 2));
+
 			$("#" + randBox.attr("id") + " img").remove();
 			randBox.css("opacity", "1");
-			randBox.html("<img src='snail.png'/>");
+			randBox.html(collectables[randCollectable]);
 		}
 		$("img").css({
 			"width": sizeBox,
@@ -160,7 +171,7 @@ $(document).ready(function(){
 		);
 	};
 
-	var changeLevel = function(NumMoves, gridSize, snailValue){
+	var changeLevel = function(NumMoves, gridSize, SnailValue, ClockValue){
 		$("#score").remove();
 		$(".box").remove();
 
@@ -169,7 +180,8 @@ $(document).ready(function(){
 		enemyOwned = 0;
 		grid = generateGrid(gridSize);
 		spacesAvailable = grid.length * grid.length;
-		snailValue = snailValue;
+		snailValue = SnailValue;
+		clockValue = ClockValue;
 		currentPlayerPosition = [1,1];
 		currentEnemyPosition = [grid.length, grid.length];
 
@@ -202,14 +214,14 @@ $(document).ready(function(){
 	});
 
 	$("#easy").click(function(){
-		changeLevel(50, 5, 3);
+		changeLevel(50, 5, 3, 3);
 	});
 
 	$("#normal").click(function(){
-		changeLevel(75, 15, 4);
+		changeLevel(75, 15, 4, 4);
 	});
 
 	$("#hard").click(function(){
-		changeLevel(100, 25, 5);
+		changeLevel(100, 25, 5, 5);
 	});
 });
