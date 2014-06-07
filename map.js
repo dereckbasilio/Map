@@ -2,15 +2,8 @@ $(document).ready(function(){
 	var sizeContainer = parseInt($(".container").css("height").replace("px",""));
 	var sizeBox = 0;
 
-	var leftKey = 37;
-	var upKey = 38;
-	var rightKey = 39;
-	var downKey = 40;
-
 	var playerOwned = 0;
 	var enemyOwned = 0;
-	var finalScore = 0;
-	var spacesAvailable = 0;
 
 	var snailValue = 3;
 	var snailsCollected = 0;
@@ -138,7 +131,7 @@ $(document).ready(function(){
 	};
 
 	var getSpaces =  function(){
-		spacesAvailable = grid.length * grid.length;
+		var spacesAvailable = grid.length * grid.length;
 		playerOwned = 0;
 		enemyOwned = 0;
 
@@ -164,6 +157,8 @@ $(document).ready(function(){
 		var spacesScore = playerOwned * 10;
 		var snailBonus = snailsCollected * 3;
 		var clockBonus = clocksCollected * 3;
+
+		var finalScore = 0;
 
 		var winBonus = 1;
 		if(playerOwned > enemyOwned) winBonus = 2;
@@ -204,7 +199,11 @@ $(document).ready(function(){
 	};
 
 	$(document).keydown(function(e){
-
+		var leftKey = 37;
+		var upKey = 38;
+		var rightKey = 39;
+		var downKey = 40;
+		
 		if(numMoves > 0){
 			switch(e.which){
 			case leftKey: 
@@ -229,10 +228,10 @@ $(document).ready(function(){
 	});
 
 	$("#normal").click(function(){
-		changeLevel(75, 15, 4, 4);
+		changeLevel(75, 15, 4, 5);
 	});
 
 	$("#hard").click(function(){
-		changeLevel(100, 25, 5, 5);
+		changeLevel(100, 25, 5, 8);
 	});
 });
