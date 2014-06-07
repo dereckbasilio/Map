@@ -2,17 +2,16 @@ $(document).ready(function(){
 	var sizeContainer = parseInt($(".container").css("height").replace("px",""));
 	var sizeBox = 0;
 
-	var leftKey = 37;
-	var upKey = 38;
-	var rightKey = 39;
-	var downKey = 40;
-
 	var playerOwned = 0;
 	var enemyOwned = 0;
-	var finalScore = 0;
-	var spacesAvailable = 0;
-	var starValue = 3;
-	var starsCollected = 0;
+
+	var snailValue = 3;
+	var clockValue = 3;
+	var doubleValue = 1;
+
+	var snailsCollected = 0;
+	var clocksCollected = 0;
+	var doublesCollected = 0;
 
 	var numMoves = 50;
 	var stopOppent = 0;
@@ -62,10 +61,6 @@ $(document).ready(function(){
 	var movePlayer = function(position, addOrSub){
 		var box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
 
-		var x = Math.floor((Math.random() * grid.length) + 1);
-		var y = Math.floor((Math.random() * grid.length) + 1);
-		var randBox = $("#" + x + "_" + y);
-
 		var boxImg = $("#" + box.attr("id") + " img");
 
 		box.css("opacity", "0");
@@ -76,14 +71,6 @@ $(document).ready(function(){
 
 		box = $("#" + currentPlayerPosition[0] + "_" + currentPlayerPosition[1]);
 		boxImg = $("#" + box.attr("id") + " img");
-		
-		if(boxImg.attr("src") === "goldStar.png"){
-			stopOppent += starValue;
-			starsCollected += 1;
-		}
-
-		box.css("opacity", "1");
-		box.html("<img src='avatar.png'/>");
 
 		if(!(stopOppent > 0)){
 			moveOppenent();
@@ -91,39 +78,73 @@ $(document).ready(function(){
 		}
 		else stopOppent--;
 
-		if(numMoves % 5 === 0){
-			$("#" + randBox.attr("id") + " img").remove();
-			randBox.css("opacity", "1");
-			randBox.html("<img src='goldStar.png'/>");
-		}
+		if(numMoves % 5 === 0) placeCollectable();
+
+		runCollectablePower(boxImg);
+
+		box.css("opacity", "1");
+		box.html("<img src='avatar.png'/>");
+
 		$("img").css({
 			"width": sizeBox,
 			"height": sizeBox
 		});
-		$("#movesLeft").html(numMoves--);
+
+		$("#movesLeft").html(--numMoves);
 
 		getSpaces();
 	};
 
 	var moveOppenent = function(){
-		var box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
-
 		var x = Math.floor((Math.random() * grid.length) + 1);
 		var y = Math.floor((Math.random() * grid.length) + 1);
 
 		currentEnemyPosition[0] = x;
 		currentEnemyPosition[1] = y;
 
-		box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
-
-		if($("#" + box.attr("id") + "img").attr("src") === "enemy.png") moveOppenent(box);
+		var box = $("#" + currentEnemyPosition[0] + "_" + currentEnemyPosition[1]);
 
 		box.css("opacity", "1");
 		box.html("<img src='enemy.png'/>");
 	};
 
+	var placeCollectable = function(){
+		var collectables = ["snail.png", "clock.png", "double.png"];
+
+		var x = Math.floor((Math.random() * grid.length) + 1);
+		var y = Math.floor((Math.random() * grid.length) + 1);
+		var randBox = $("#" + x + "_" + y);
+
+		var randRange = Math.floor((Math.random() * 100) + 1);
+		var collectable = 0;
+
+		if(randRange >= 1 && randRange <= 50) collectable = 0;
+		else if(randRange >= 51 && randRange <= 90) collectable = 1;
+		else if(randRange >= 91 && randRange <= 100) collectable = 2;
+
+		$("#" + randBox.attr("id") + " img").remove();
+		randBox.css("opacity", "1");
+		randBox.html("<img src='" + collectables[collectable] + "'/>");
+	};
+
+	var runCollectablePower= function(boxImg){
+		if(boxImg.attr("src") === "snail.png"){
+			stopOppent += snailValue * doubleValue;
+			snailsCollected += 1;
+		}
+		else if(boxImg.attr("src") === "clock.png"){
+			numMoves += clockValue * doubleValue;
+			clocksCollected += 1;
+		}
+		else if(boxImg.attr("src") === "double.png"){
+			doublesCollected += 1;
+			if(doublesCollected === 1) doubleValue = 2;
+			else if(doublesCollected % 4 === 0) doubleValue *= 2;
+		}
+	};
+
 	var getSpaces =  function(){
-		spacesAvailable = grid.length * grid.length;
+		var spacesAvailable = grid.length * grid.length;
 		playerOwned = 0;
 		enemyOwned = 0;
 
@@ -147,20 +168,31 @@ $(document).ready(function(){
 
 	var getFinalScore = function(){
 		var spacesScore = playerOwned * 10;
-		var bonus = starsCollected * 3;
-		finalScore = spacesScore + bonus;
+		var snailBonus = snailsCollected * 3;
+		var clockBonus = clocksCollected * 3;
+		var doubleBonus = doublesCollected * 3;
+
+		var finalScore = 0;
+
+		var winBonus = 1;
+		if(playerOwned > enemyOwned) winBonus = 2;
+
+		finalScore = (spacesScore + snailBonus + clockBonus + doubleBonus) * winBonus;
 
 		$(".box").remove();
 
 		$(".container").html(
 			"<div class='center' id='score'><h1>Spaces Owned " + playerOwned + " X 10: " + spacesScore + "</h1>" +
-			"<h1>Stars Collected " + starsCollected + " X 3: " + bonus + "</h1>" +
+			"<h1>Snails Collected " + snailsCollected + " X 3: " + snailBonus + "</h1>" +
+			"<h1>Clocks Collected " + clocksCollected + " X 3: " + clockBonus + "</h1>" +
+			"<h1>Boosts Collected " + doublesCollected + " X 3: " + doubleBonus + "</h1>" +
+			"<h1>Win Bonus: X " + winBonus + "</h1>" +
 			"<h1>Total Score: " + finalScore + "</h1></div>"
 
 		);
 	};
 
-	var changeLevel = function(NumMoves, gridSize, StarValue){
+	var changeLevel = function(NumMoves, gridSize, SnailValue, ClockValue){
 		$("#score").remove();
 		$(".box").remove();
 
@@ -169,7 +201,8 @@ $(document).ready(function(){
 		enemyOwned = 0;
 		grid = generateGrid(gridSize);
 		spacesAvailable = grid.length * grid.length;
-		starValue = StarValue;
+		snailValue = SnailValue;
+		clockValue = ClockValue;
 		currentPlayerPosition = [1,1];
 		currentEnemyPosition = [grid.length, grid.length];
 
@@ -181,8 +214,12 @@ $(document).ready(function(){
 	};
 
 	$(document).keydown(function(e){
-
-		if(numMoves >= 0){
+		var leftKey = 37;
+		var upKey = 38;
+		var rightKey = 39;
+		var downKey = 40;
+		
+		if(numMoves > 0){
 			switch(e.which){
 			case leftKey: 
 				if(currentPlayerPosition[1] > 1) movePlayer(1, 0);
@@ -202,14 +239,14 @@ $(document).ready(function(){
 	});
 
 	$("#easy").click(function(){
-		changeLevel(50, 5, 3);
+		changeLevel(50, 5, 3, 3);
 	});
 
 	$("#normal").click(function(){
-		changeLevel(75, 15, 4);
+		changeLevel(75, 15, 4, 5);
 	});
 
 	$("#hard").click(function(){
-		changeLevel(100, 25, 5);
+		changeLevel(100, 25, 5, 8);
 	});
 });

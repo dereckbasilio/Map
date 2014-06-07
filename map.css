@@ -17,11 +17,11 @@
 }
 
 .box:nth-child(odd){
-	background-color: black;
+	background-color: brown;
 }
 
 .box:nth-child(even){
-	background-color: red;
+	background-color: beige;
 }
 
 #status, .lev, .container{
