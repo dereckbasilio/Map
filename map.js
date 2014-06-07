@@ -6,9 +6,12 @@ $(document).ready(function(){
 	var enemyOwned = 0;
 
 	var snailValue = 3;
-	var snailsCollected = 0;
 	var clockValue = 3;
+	var doubleValue = 1;
+
+	var snailsCollected = 0;
 	var clocksCollected = 0;
+	var doublesCollected = 0;
 
 	var numMoves = 50;
 	var stopOppent = 0;
@@ -106,27 +109,37 @@ $(document).ready(function(){
 	};
 
 	var placeCollectable = function(){
-		var collectables = ["<img src='snail.png'/>", "<img src='clock.png'/>"];
+		var collectables = ["snail.png", "clock.png", "double.png"];
 
 		var x = Math.floor((Math.random() * grid.length) + 1);
 		var y = Math.floor((Math.random() * grid.length) + 1);
 		var randBox = $("#" + x + "_" + y);
 
-		var randCollectable = Math.floor((Math.random() * 2));
+		var randRange = Math.floor((Math.random() * 100) + 1);
+		var collectable = 0;
+
+		if(randRange >= 1 && randRange <= 50) collectable = 0;
+		else if(randRange >= 51 && randRange <= 90) collectable = 1;
+		else if(randRange >= 91 && randRange <= 100) collectable = 2;
 
 		$("#" + randBox.attr("id") + " img").remove();
 		randBox.css("opacity", "1");
-		randBox.html(collectables[randCollectable]);
+		randBox.html("<img src='" + collectables[collectable] + "'/>");
 	};
 
 	var runCollectablePower= function(boxImg){
 		if(boxImg.attr("src") === "snail.png"){
-			stopOppent += snailValue;
+			stopOppent += snailValue * doubleValue;
 			snailsCollected += 1;
 		}
 		else if(boxImg.attr("src") === "clock.png"){
-			numMoves += clockValue;
+			numMoves += clockValue * doubleValue;
 			clocksCollected += 1;
+		}
+		else if(boxImg.attr("src") === "double.png"){
+			doublesCollected += 1;
+			if(doublesCollected === 1) doubleValue = 2;
+			else if(doublesCollected % 4 === 0) doubleValue *= 2;
 		}
 	};
 
@@ -157,13 +170,14 @@ $(document).ready(function(){
 		var spacesScore = playerOwned * 10;
 		var snailBonus = snailsCollected * 3;
 		var clockBonus = clocksCollected * 3;
+		var doubleBonus = doublesCollected * 3;
 
 		var finalScore = 0;
 
 		var winBonus = 1;
 		if(playerOwned > enemyOwned) winBonus = 2;
 
-		finalScore = (spacesScore + snailBonus + clockBonus) * winBonus;
+		finalScore = (spacesScore + snailBonus + clockBonus + doubleBonus) * winBonus;
 
 		$(".box").remove();
 
@@ -171,6 +185,7 @@ $(document).ready(function(){
 			"<div class='center' id='score'><h1>Spaces Owned " + playerOwned + " X 10: " + spacesScore + "</h1>" +
 			"<h1>Snails Collected " + snailsCollected + " X 3: " + snailBonus + "</h1>" +
 			"<h1>Clocks Collected " + clocksCollected + " X 3: " + clockBonus + "</h1>" +
+			"<h1>Boosts Collected " + doublesCollected + " X 3: " + doubleBonus + "</h1>" +
 			"<h1>Win Bonus: X " + winBonus + "</h1>" +
 			"<h1>Total Score: " + finalScore + "</h1></div>"
 
